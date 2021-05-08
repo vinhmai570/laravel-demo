@@ -213,6 +213,7 @@
 ```php
     // databases/migrations/...categories_table.php
     $table->string('name');
+    $table->string('slug')->unique();
 
     // databases/migrations/...posts_table.php
     $table->string('title');
