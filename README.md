@@ -256,9 +256,9 @@
     // database/fatories/PostFactory
     use Illuminate\Support\Str;
 
+    // definition() function
     $title = $this->faker->sentence(10);
 
-    // definition() function
     return [
         'title' => $title,
         'slug' => Str::slug($title),
