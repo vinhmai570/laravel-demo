@@ -1,5 +1,5 @@
 
-## Install
+## Install Laravel
 
 ```bash
     composer create-project laravel/laravel laravel-demo
