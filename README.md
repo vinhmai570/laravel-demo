@@ -1,38 +1,38 @@
 
 ## Install Laravel
 
-```bash
-    composer create-project laravel/laravel laravel-demo
+```sh
+composer create-project laravel/laravel laravel-demo
 
-    cd laravel-demo
+cd laravel-demo
 
-    php artisan serve
+php artisan serve
 ```
 
 ## Connect database
 
 ```
-    DB_CONNECTION=YOUR_CONNECTION
-    DB_HOST=YOUR_DB_HOST
-    DB_PORT=YOUR_DB_PORT
-    DB_DATABASE=YOUR_DB_NAME
-    DB_USERNAME=YOUR_DB_USERNAME
-    DB_PASSWORD=YOUR_DB_PASSWORD
+DB_CONNECTION=YOUR_CONNECTION
+DB_HOST=YOUR_DB_HOST
+DB_PORT=YOUR_DB_PORT
+DB_DATABASE=YOUR_DB_NAME
+DB_USERNAME=YOUR_DB_USERNAME
+DB_PASSWORD=YOUR_DB_PASSWORD
 ```
 
 ## Create View
 
 ```bash
-    # create app layout file
-    touch resources/views/app.blade.php
-    # create commons folder
-    mkdir resources/views/commons
-    # create header file
-    touch resources/views/commons/header.blade.php
-    # create footer file
-    touch resources/views/commons/footer.blade.php
-    # create home views
-    mkdir resources/views/home && touch resources/views/home/index.blade.php
+# create app layout file
+touch resources/views/app.blade.php
+# create commons folder
+mkdir resources/views/commons
+# create header file
+touch resources/views/commons/header.blade.php
+# create footer file
+touch resources/views/commons/footer.blade.php
+# create home views
+mkdir resources/views/home && touch resources/views/home/index.blade.php
 ```
 
 ## Setup views, bootstrap 4
@@ -177,130 +177,130 @@
 
  - Create home controller
 
-```php
-    php artisan make:controller HomeController
+```sh
+php artisan make:controller HomeController
 ```
  - Create function index
 
  ```php
-    // App/Http/Controller/HomeController
+// App/Http/Controller/HomeController
 
-    public function index()
-    {
-        return view('home.index');
-    }
+public function index()
+{
+    return view('home.index');
+}
 ```
 
  - Setup home route
 
 ```php
-    // routes/web.php
+// routes/web.php
 
-    use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeController;
 
-    Route::get('/', [HomeController::class, 'index'])->name('root');
+Route::get('/', [HomeController::class, 'index'])->name('root');
 ```
 
  - Make category & post models
 
-```php
-    php artisan make:model Category -m
-    php artisan make:model Post -m
+```sh
+php artisan make:model Category -m
+php artisan make:model Post -m
 ```
 
  - Add attributes to category & post migrations
 
 ```php
-    // databases/migrations/...categories_table.php
-    $table->string('name');
-    $table->string('slug')->unique();
+// databases/migrations/...categories_table.php
+$table->string('name');
+$table->string('slug')->unique();
 
-    // databases/migrations/...posts_table.php
-    $table->string('title');
-    $table->string('slug')->unique();
-    $table->string('short_description');
-    $table->string('description');
-    $table->string('image');
-    $table->integer('category_id');
+// databases/migrations/...posts_table.php
+$table->string('title');
+$table->string('slug')->unique();
+$table->string('short_description');
+$table->string('description');
+$table->string('image');
+$table->integer('category_id');
 ```
 
  - Run migrate
 
  ```
-    php artisan migrate
+php artisan migrate
  ```
 
  - Create relationships for post & category models
 
  ```php
-    // App/Models/Category
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
+// App/Models/Category
+public function posts()
+{
+    return $this->hasMany(Post::class);
+}
 
-    // App/Models/Post
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+// App/Models/Post
+public function category()
+{
+    return $this->belongsTo(Category::class);
+}
  ```
 
  - Seed categories & posts
 
 ```bash
-    php artisan make:factory PostFactory --model=Post
+php artisan make:factory PostFactory --model=Post
 ```
 
 ```php
-    // database/fatories/PostFactory
-    use Illuminate\Support\Str;
+// database/fatories/PostFactory
+use Illuminate\Support\Str;
 
-    // definition() function
-    $title = $this->faker->sentence(10);
+// definition() function
+$title = $this->faker->sentence(10);
 
-    return [
-        'title' => $title,
-        'slug' => Str::slug($title),
-        'short_description' => $this->faker->sentence(15),
-        'description' => $this->faker->text(200),
-        'image' => $this->faker->imageUrl(600, 480),
-        'category_id' => rand(1, 3)
-    ];
+return [
+    'title' => $title,
+    'slug' => Str::slug($title),
+    'short_description' => $this->faker->sentence(15),
+    'description' => $this->faker->text(200),
+    'image' => $this->faker->imageUrl(600, 480),
+    'category_id' => rand(1, 3)
+];
 
-    // database/DatabaseSeeder
-    use Illuminate\Support\Facades\DB;
+// database/DatabaseSeeder
+use Illuminate\Support\Facades\DB;
 
-    \App\Models\Post::factory(20)->create();
+\App\Models\Post::factory(20)->create();
 
-    DB::table('categories')->insert([
-        [
-            'id'   => 1,
-            'name' => 'news',
-            'slug' => 'news'
-        ],
-        [
-            'id'   => 2,
-            'name' => 'life',
-            'slug' => 'life'
-        ],
-        [
-            'id'   => 3,
-            'name' => 'finance',
-            'slug' => 'finance'
-        ]
-    ]);
+DB::table('categories')->insert([
+    [
+        'id'   => 1,
+        'name' => 'news',
+        'slug' => 'news'
+    ],
+    [
+        'id'   => 2,
+        'name' => 'life',
+        'slug' => 'life'
+    ],
+    [
+        'id'   => 3,
+        'name' => 'finance',
+        'slug' => 'finance'
+    ]
+]);
 ```
 
  - Get posts from databases
 
 ```php
-    // App/Http/Controller/HomeController
-    use App\Models\Post;
+// App/Http/Controller/HomeController
+use App\Models\Post;
 
-    // index() function
-    $posts = Post::paginate(10);
-    return view('home.index', compact('posts'));
+// index() function
+$posts = Post::paginate(10);
+return view('home.index', compact('posts'));
 ```
 
  - Show posts to home view
@@ -332,40 +332,39 @@
  - To use bootstrap for pagination
 
 ```php
-    // App/Providers/AppServiceProvider
-    use Illuminate\Pagination\Paginator;
+// App/Providers/AppServiceProvider
+use Illuminate\Pagination\Paginator;
 
-    // boot() function
-    Paginator::useBootstrap();
-
+// boot() function
+Paginator::useBootstrap();
 ```
 
  - Show posts by category
  - Make PostController
-```bash
-    php artisan make:controller PostController
+```sh
+php artisan make:controller PostController
 ```
 
  - Create function index()
 ```php
-    // App/Http/Controller/PostController
-    use Illuminate\Http\Request;
-    use App\Models\Category;
+// App/Http/Controller/PostController
+use Illuminate\Http\Request;
+use App\Models\Category;
 
-    public function index(Request $request)
-    {
-        $categories = Category::all();
-        $posts      = Category::firstWhere('slug', $request->category)->posts()->paginate(6);
-        return view('home.index', compact('posts', 'categories'));
-    }
+public function index(Request $request)
+{
+    $categories = Category::all();
+    $posts      = Category::firstWhere('slug', $request->category)->posts()->paginate(6);
+    return view('home.index', compact('posts', 'categories'));
+}
 ```
 
  - Create route for PostController
 
 ```php
-    use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostController;
 
-    Route::get('/posts/{category}', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/{category}', [PostController::class, 'index'])->name('posts.index');
 ```
 
  - Update header view
