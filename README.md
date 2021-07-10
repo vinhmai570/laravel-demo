@@ -1,12 +1,12 @@
 ## About Project
 
-This projec is demo of functions Laravel, includes Model, View, Controller, Route, ... 
+This projec is demo of functions Laravel Framework, includes Model, View, Controller, Route, ... 
 
 ## Requirements
 * php 7.4
 * mysql 5.7
 
-## Install Laravel
+## Init Project
 
 ```sh
 composer create-project laravel/laravel laravel-demo
