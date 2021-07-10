@@ -32,12 +32,16 @@ DB_PASSWORD=YOUR_DB_PASSWORD
 ```bash
 # create app layout file
 touch resources/views/app.blade.php
+
 # create commons folder
 mkdir resources/views/commons
+
 # create header file
 touch resources/views/commons/header.blade.php
+
 # create footer file
 touch resources/views/commons/footer.blade.php
+
 # create home views
 mkdir resources/views/home && touch resources/views/home/index.blade.php
 ```
@@ -255,7 +259,7 @@ public function category()
 
  - Seed categories & posts
 
-```bash
+```sh
 php artisan make:factory PostFactory --model=Post
 ```
 
