@@ -1,3 +1,10 @@
+## About Project
+
+This projec is demo of functions Laravel, includes Model, View, Controller, Route, ... 
+
+## Requirements
+* php 7.4
+* mysql 5.7
 
 ## Install Laravel
 
