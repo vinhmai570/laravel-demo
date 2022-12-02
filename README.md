@@ -1,6 +1,6 @@
 ## About Project
 
-This projec is demo of functions Laravel Framework, includes Model, View, Controller, Route, ... 
+This project is demo of functions Laravel Framework, includes Model, View, Controller, Route, ... 
 
 ## Requirements
 * php 7.4
